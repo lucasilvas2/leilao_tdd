@@ -10,100 +10,122 @@ use PHPUnit\Framework\TestCase;
 
 class AvaliadorTest extends TestCase
 {
-    public function testAvaliadorEncontrarOMaiorValorLancesCrescentes()
+
+    /**
+     * @param Leilao $leilao
+     * @return void
+     * @dataProvider leilaoEmOrdemDecrescente
+     * @dataProvider leilaoEmOrdemCrescente
+     * @dataProvider leilaoEmOrdemAleatoria
+     */
+    public function testAvaliadorEncontrarOMaiorValorLances(Leilao $leilao)
     {
-        $leiao = new Leilao('Corsa preto');
-
-        $maria = new Usuario('Maria');
-        $joao = new Usuario('Joao');
-
-        $leiao->recebeLance(new Lance($maria, 2000));
-        $leiao->recebeLance(new Lance($joao, 3000));
 
         $leioeiro = new Avaliador();
-        $leioeiro->avalia($leiao);
-
-        $maiorValor = $leioeiro->getMaiorValor();
-
-        self::assertEquals(3000, $maiorValor);
-    }
-    public function testAvaliadorEncontrarOMaiorValorLancesDescrecentes()
-    {
-        $leiao = new Leilao('Corsa preto');
-
-        $maria = new Usuario('Maria');
-        $joao = new Usuario('Joao');
-
-        $leiao->recebeLance(new Lance($joao, 3000));
-        $leiao->recebeLance(new Lance($maria, 2000));
-
-        $leioeiro = new Avaliador();
-        $leioeiro->avalia($leiao);
+        $leioeiro->avalia($leilao);
 
         $maiorValor = $leioeiro->getMaiorValor();
 
         self::assertEquals(3000, $maiorValor);
     }
 
-    public function testAvaliadorEncontrarOMenorValorLancesDescrecentes()
+    /**
+     * @param Leilao $leilao
+     * @return void
+     * @dataProvider leilaoEmOrdemDecrescente
+     * @dataProvider leilaoEmOrdemCrescente
+     * @dataProvider leilaoEmOrdemAleatoria
+     */
+    public function testAvaliadorEncontrarOMenorValorLances(Leilao $leilao)
     {
-        $leiao = new Leilao('Corsa preto');
-
-        $maria = new Usuario('Maria');
-        $joao = new Usuario('Joao');
-
-        $leiao->recebeLance(new Lance($joao, 3000));
-        $leiao->recebeLance(new Lance($maria, 2000));
 
         $leioeiro = new Avaliador();
-        $leioeiro->avalia($leiao);
+        $leioeiro->avalia($leilao);
 
         $menorValor = $leioeiro->getMenorValor();
 
-        self::assertEquals(2000, $menorValor);
+        self::assertEquals(1700, $menorValor);
     }
 
-    public function testAvaliadorEncontrarOMenorValorLancesCrescentes()
+    /**
+     * @param Leilao $leilao
+     * @return void
+     * @dataProvider leilaoEmOrdemDecrescente
+     * @dataProvider leilaoEmOrdemCrescente
+     * @dataProvider leilaoEmOrdemAleatoria
+     */
+    public function testAvaliadorRetornaOs3MaioresLances(Leilao $leilao)
     {
-        $leiao = new Leilao('Corsa preto');
-
-        $maria = new Usuario('Maria');
-        $joao = new Usuario('Joao');
-
-        $leiao->recebeLance(new Lance($maria, 2000));
-        $leiao->recebeLance(new Lance($joao, 3000));
-
         $leioeiro = new Avaliador();
-        $leioeiro->avalia($leiao);
-
-        $menorValor = $leioeiro->getMenorValor();
-
-        self::assertEquals(2000, $menorValor);
-    }
-
-    public function testAvaliadorRetornaOs3MaioresLances()
-    {
-        $leiao = new Leilao('Corsa preto');
-
-        $maria = new Usuario('Maria');
-        $joao = new Usuario('Joao');
-        $pedro = new Usuario('Pedro');
-        $joana = new Usuario('Joana');
-
-        $leiao->recebeLance(new Lance($maria, 2000));
-        $leiao->recebeLance(new Lance($joao, 3000));
-        $leiao->recebeLance(new Lance($pedro, 1000));
-        $leiao->recebeLance(new Lance($joana, 1500));
-
-        $leioeiro = new Avaliador();
-        $leioeiro->avalia($leiao);
+        $leioeiro->avalia($leilao);
 
         $maioresLances = $leioeiro->getMaioresLances();
 
         self::assertCount(3, $maioresLances);
         self::assertEquals(3000, $maioresLances[0]->getValor());
         self::assertEquals(2000, $maioresLances[1]->getValor());
-        self::assertEquals(1500, $maioresLances[2]->getValor());
+        self::assertEquals(1700, $maioresLances[2]->getValor());
     }
+
+    public static function leilaoEmOrdemCrescente()
+    {
+        $leilao = new Leilao('Fiat 147 0KM');
+
+        $maria = new Usuario('Maria');
+        $joao = new Usuario('João');
+        $ana = new Usuario('Ana');
+
+        $leilao->recebeLance(new Lance($ana, 1700));
+        $leilao->recebeLance(new Lance($joao, 2000));
+        $leilao->recebeLance(new Lance($maria, 3000));
+
+        return [
+            'ordem-crescente' => [$leilao]
+        ];
+    }
+
+    public static function leilaoEmOrdemDecrescente()
+    {
+        $leilao = new Leilao('Fiat 147 0KM');
+
+        $maria = new Usuario('Maria');
+        $joao = new Usuario('João');
+        $ana = new Usuario('Ana');
+
+        $leilao->recebeLance(new Lance($maria, 3000));
+        $leilao->recebeLance(new Lance($joao, 2000));
+        $leilao->recebeLance(new Lance($ana, 1700));
+
+        return [
+            'ordem-decrescente' => [$leilao]
+        ];
+    }
+
+    public static function leilaoEmOrdemAleatoria()
+    {
+        $leilao = new Leilao('Fiat 147 0KM');
+
+        $maria = new Usuario('Maria');
+        $joao = new Usuario('João');
+        $ana = new Usuario('Ana');
+
+        $leilao->recebeLance(new Lance($joao, 2000));
+        $leilao->recebeLance(new Lance($maria, 3000));
+        $leilao->recebeLance(new Lance($ana, 1700));
+
+        return [
+            'ordem-aleatoria' => [$leilao]
+        ];
+    }
+
+    public static function entregaLeiloes(): array
+    {
+        return [
+            [self::leilaoEmOrdemCrescente()],
+            [self::leilaoEmOrdemDecrescente()],
+            [self::leilaoEmOrdemAleatoria()]
+        ];
+    }
+
 
 }

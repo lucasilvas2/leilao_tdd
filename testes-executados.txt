@@ -1,0 +1,11 @@
+Avaliador (Service\Avaliador)
+ [x] Avaliador encontrar o maior valor lances with data set "ordem-decrescente"
+ [x] Avaliador encontrar o maior valor lances with data set "ordem-crescente"
+ [x] Avaliador encontrar o maior valor lances with data set "ordem-aleatoria"
+ [x] Avaliador encontrar o menor valor lances with data set "ordem-decrescente"
+ [x] Avaliador encontrar o menor valor lances with data set "ordem-crescente"
+ [x] Avaliador encontrar o menor valor lances with data set "ordem-aleatoria"
+ [x] Avaliador retorna os 3 maiores lances with data set "ordem-decrescente"
+ [x] Avaliador retorna os 3 maiores lances with data set "ordem-crescente"
+ [x] Avaliador retorna os 3 maiores lances with data set "ordem-aleatoria"
+
